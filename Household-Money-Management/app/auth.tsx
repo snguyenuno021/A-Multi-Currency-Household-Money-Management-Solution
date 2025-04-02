@@ -29,15 +29,12 @@ export default function LoginScreen() {
     }
 
     // --- TODO: Implement actual authentication logic here ---
-    // Example: Call an API, check credentials, navigate on success
-    navigation.navigate("main")
+    navigation.navigate("(tabs)/main")
     console.log('Attempting login with:', { email, password });
     Alert.alert(
       'Login Attempt',
       `Email: ${email}\nPassword: ${password}\n\n(Replace this with real auth logic!)`
     );
-
-    // Example of handling failed login:
     // Alert.alert('Login Failed', 'Invalid email or password.');
   };
 
@@ -75,7 +72,7 @@ export default function LoginScreen() {
           <Text style={styles.buttonText}>Log In</Text>
         </TouchableOpacity>
 
-        {/* Optional: Add links for password reset or sign up */}
+        {/* Add links for password reset or sign up */}
         {/*
         <TouchableOpacity onPress={() => console.log('Forgot Password pressed')}>
           <Text style={styles.linkText}>Forgot Password?</Text>

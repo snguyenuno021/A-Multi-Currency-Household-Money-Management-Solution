@@ -10,15 +10,8 @@ export default function RootLayout() {
   return (
     <Stack>
       {/* Configure the 'index' screen (your login page) */}
-      <Stack.Screen
-        name="index" // This refers to app/index.tsx
-        options={{
-          title: 'Login', // Set the desired header title here
-          // You might also want to hide the header if your component
-          // already has a prominent "Login" title in its content:
-          headerShown: false,
-        }}
-      />
+      <Stack.Screen name="(app)" options={{ headerShown: false }} />
+      <Stack.Screen name="(tabs)/(auth)/index" options={{ headerShown: false }} />
       {/* Add configurations for other screens here */}
       {/* e.g., <Stack.Screen name="home" options={{ title: 'Home' }} /> */}
     </Stack>
