@@ -29,7 +29,7 @@ export default function LoginScreen() {
     }
 
     // --- TODO: Implement actual authentication logic here ---
-    navigation.navigate("(tabs)/main")
+    navigation.navigate("(app)")
     console.log('Attempting login with:', { email, password });
     Alert.alert(
       'Login Attempt',
