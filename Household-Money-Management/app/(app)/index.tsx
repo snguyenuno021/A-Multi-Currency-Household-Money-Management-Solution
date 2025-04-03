@@ -1,16 +1,18 @@
 // screens/GraphScreen.tsx
 
+import { getToken } from '../../utils/auth';
 import React from 'react';
 import { Text, View, StyleSheet, Dimensions, ScrollView } from 'react-native';
 import {
   LineChart,
   PieChart,
 } from 'react-native-chart-kit';
+import { Stack, useRouter, SplashScreen } from 'expo-router';
 
 // Get screen width for responsive chart sizing
 const screenWidth = Dimensions.get('window').width;
 
-// --- Chart Configuration (Styling) ---
+// Chart Configuration (Styling)
 const chartConfig = {
   backgroundColor: '#e26a00', // Background color for the chart area itself (gradient start)
   backgroundGradientFrom: '#fb8c00', // Gradient start color
@@ -28,7 +30,7 @@ const chartConfig = {
   },
 };
 
-// --- Sample Data ---
+// Sample Data
 const lineChartData = {
   labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
   datasets: [
@@ -55,7 +57,6 @@ const pieChartData = [
     { name: "New York", population: 8537673, color: "#ffffff", legendFontColor: "#7F7F7F", legendFontSize: 15 },
     { name: "Moscow", population: 11920000, color: "rgb(0, 0, 255)", legendFontColor: "#7F7F7F", legendFontSize: 15 }
 ];
-
 
 export default function GraphScreen() {
   return (

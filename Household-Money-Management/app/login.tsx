@@ -1,6 +1,7 @@
 // app/index.tsx (or a new file like screens/LoginScreen.tsx)
 
 import React, { useState } from 'react';
+import { storeToken } from '../utils/auth';
 import {
   Text,
   View,
@@ -11,32 +12,32 @@ import {
   KeyboardAvoidingView, // Helps prevent keyboard from covering inputs
   Platform, // For platform-specific behavior
 } from 'react-native';
-import {
-  createStaticNavigation,
-  useNavigation,
-} from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigation = useNavigation();
+  const router = useRouter();
 
-  const handleLogin = () => {
-    // Basic validation
-    if (!email || !password) {
-      Alert.alert('Error', 'Please enter both email and password.');
-      return;
+  const handleLogin = async () => {
+    // TODO: Replace with actual API call for authentication
+    console.log('Attempting login...');
+    // Simulate successful login and getting a token
+    const fakeApiToken = `fake-token-${Date.now()}`;
+
+    if (fakeApiToken) { // Check if login was successful
+      try {
+        await storeToken(fakeApiToken); // Use the imported function
+        Alert.alert('Success', 'Logged in successfully!');
+        router.replace('/')
+      } catch (error) {
+         Alert.alert('Error', 'Failed to store login session.');
+      }
+    } else {
+      Alert.alert('Error', 'Invalid credentials.');
     }
-
-    // --- TODO: Implement actual authentication logic here ---
-    navigation.navigate("(app)")
-    console.log('Attempting login with:', { email, password });
-    Alert.alert(
-      'Login Attempt',
-      `Email: ${email}\nPassword: ${password}\n\n(Replace this with real auth logic!)`
-    );
-    // Alert.alert('Login Failed', 'Invalid email or password.');
   };
+
 
   return (
     // KeyboardAvoidingView helps push content up when keyboard appears
