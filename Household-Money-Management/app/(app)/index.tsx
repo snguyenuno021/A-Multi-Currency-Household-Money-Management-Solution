@@ -7,7 +7,6 @@ import {
   LineChart,
   PieChart,
 } from 'react-native-chart-kit';
-import { Stack, useRouter, SplashScreen } from 'expo-router';
 
 // Get screen width for responsive chart sizing
 const screenWidth = Dimensions.get('window').width;
