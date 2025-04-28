@@ -21,12 +21,3 @@ export const storeToken = async (token: string): Promise<void> => {
       return null;
     }
   };
-
-  export const removeToken = async (): Promise<void> => {
-    try {
-      await AsyncStorage.removeItem(ACCESS_TOKEN_KEY);
-      console.log('Token removed successfully!');
-    } catch (error) {
-      console.error('Failed to remove the token:', error);
-    }
-  };
