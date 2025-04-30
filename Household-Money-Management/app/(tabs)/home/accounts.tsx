@@ -64,7 +64,7 @@ export default function AddTransactionScreen() {
 
     setLoading(true);
 
-    // In a real app, you'd get the user ID from the current session
+    // Copy session checking from the other tabs
     // const { data: { user } } = await supabase.auth.getUser();
     // if (!user) {
     //   Alert.alert('Authentication Error', 'You must be logged in to add transactions.');
@@ -73,7 +73,6 @@ export default function AddTransactionScreen() {
     // }
 
     const transactionData = {
-      // user_id: user.id, // Include user ID if using RLS
       amount: parsedAmount,
       currency: currency,
       description: description.trim(),
@@ -82,6 +81,7 @@ export default function AddTransactionScreen() {
       category: category,
     };
 
+    // This needs to be updated to work with the setup
     const { error } = await supabase.from('transactions').insert([transactionData]);
 
     if (error) {
@@ -105,8 +105,6 @@ export default function AddTransactionScreen() {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Add New Transaction</Text>
-
-      {/* Amount Input */}
       <Text style={styles.label}>Amount:</Text>
       <TextInput
         style={styles.input}
@@ -115,8 +113,6 @@ export default function AddTransactionScreen() {
         value={amount}
         onChangeText={setAmount}
       />
-
-      {/* Currency Picker */}
       <Text style={styles.label}>Currency:</Text>
       <View style={styles.pickerContainer}>
         <Picker
@@ -130,8 +126,6 @@ export default function AddTransactionScreen() {
           ))}
         </Picker>
       </View>
-
-      {/* Description Input */}
       <Text style={styles.label}>Description:</Text>
       <TextInput
         style={styles.input}
@@ -139,8 +133,6 @@ export default function AddTransactionScreen() {
         value={description}
         onChangeText={setDescription}
       />
-
-       {/* Type Picker (Income/Expense) */}
       <Text style={styles.label}>Type:</Text>
       <View style={styles.pickerContainer}>
         <Picker
@@ -154,8 +146,6 @@ export default function AddTransactionScreen() {
           ))}
         </Picker>
       </View>
-
-       {/* Category Picker */}
       <Text style={styles.label}>Category:</Text>
       <View style={styles.pickerContainer}>
         <Picker
@@ -169,9 +159,6 @@ export default function AddTransactionScreen() {
           ))}
         </Picker>
       </View>
-
-
-      {/* Date Picker */}
       <Text style={styles.label}>Date:</Text>
       <TouchableOpacity onPress={showDatepicker} style={styles.dateDisplayButton}>
          <Text style={styles.dateDisplayText}>{date.toDateString()}</Text>
@@ -187,14 +174,12 @@ export default function AddTransactionScreen() {
           onChange={onDateChange}
         />
       )}
-
-      {/* Submit Button */}
       <View style={styles.buttonContainer}>
          <Button
             title={loading ? 'Adding...' : 'Add Transaction'}
             onPress={addTransaction}
             disabled={loading}
-            color="#007AFF" // Default blue button color
+            color="#007AFF"
          />
       </View>
 
