@@ -1,44 +1,55 @@
-// app/index.tsx (or a new file like screens/LoginScreen.tsx)
-
-import React, { useState } from 'react';
-import { storeToken } from '../utils/auth';
+import React, { useState } from 'react'
+import { Alert, StyleSheet, View, AppState, KeyboardAvoidingView, Platform, TextInput, Text } from 'react-native'
+import { supabase } from '../utils/supabase'
+import { Button, Input } from '@rneui/themed'
 import {
-  Text,
-  View,
-  TextInput,
+
   TouchableOpacity, // More customizable than Button
-  StyleSheet,
-  Alert, // For simple feedback
-  KeyboardAvoidingView, // Helps prevent keyboard from covering inputs
-  Platform, // For platform-specific behavior
+
 } from 'react-native';
-import { useRouter } from 'expo-router';
 
-export default function LoginScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const router = useRouter();
+// Tells Supabase Auth to continuously refresh the session automatically if
+// the app is in the foreground. When this is added, you will continue to receive
+// `onAuthStateChange` events with the `TOKEN_REFRESHED` or `SIGNED_OUT` event
+// if the user's session is terminated. This should only be registered once.
+AppState.addEventListener('change', (state) => {
+  if (state === 'active') {
+    supabase.auth.startAutoRefresh()
+  } else {
+    supabase.auth.stopAutoRefresh()
+  }
+})
 
-  const handleLogin = async () => {
-    // TODO: Replace with actual API call for authentication
-    console.log('Attempting login...');
-    // Simulate successful login and getting a token
-    const fakeApiToken = `fake-token-${Date.now()}`;
+export default function Auth() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
 
-    if (fakeApiToken) { // Check if login was successful
-      try {
-        await storeToken(fakeApiToken); // Use the imported function
-        Alert.alert('Success', 'Logged in successfully!');
-        router.replace('/')
-      } catch (error) {
-         Alert.alert('Error', 'Failed to store login session.');
-      }
-    } else {
-      Alert.alert('Error', 'Invalid credentials.');
-    }
-  };
+  async function signInWithEmail() {
+    setLoading(true)
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    })
 
+    if (error) Alert.alert(error.message)
+    setLoading(false)
+  }
 
+  async function signUpWithEmail() {
+    setLoading(true)
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+    })
+
+    if (error) Alert.alert(error.message)
+    if (!session) Alert.alert('Please check your inbox for email verification!')
+    setLoading(false)
+  }
   return (
     // KeyboardAvoidingView helps push content up when keyboard appears
     <KeyboardAvoidingView
@@ -69,27 +80,53 @@ export default function LoginScreen() {
           autoComplete="password" // Helps with autofill
         />
 
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <TouchableOpacity style={styles.button} onPress={signInWithEmail}>
           <Text style={styles.buttonText}>Log In</Text>
         </TouchableOpacity>
-
-        {/* Add links for password reset or sign up */}
-        {/*
+        <TouchableOpacity onPress={signUpWithEmail}>
+          <Text style={styles.linkText}>Don't have an account? Sign Up</Text>
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => console.log('Forgot Password pressed')}>
           <Text style={styles.linkText}>Forgot Password?</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => console.log('Sign Up pressed')}>
-          <Text style={styles.linkText}>Don't have an account? Sign Up</Text>
-        </TouchableOpacity>
-        */}
       </View>
     </KeyboardAvoidingView>
-  );
+  )
+  /*return (
+    <View style={styles.container}>
+      <View style={[styles.verticallySpaced, styles.mt20]}>
+        <Input
+          label="Email"
+          leftIcon={{ type: 'font-awesome', name: 'envelope' }}
+          onChangeText={(text) => setEmail(text)}
+          value={email}
+          placeholder="email@address.com"
+          autoCapitalize={'none'}
+        />
+      </View>
+      <View style={styles.verticallySpaced}>
+        <Input
+          label="Password"
+          leftIcon={{ type: 'font-awesome', name: 'lock' }}
+          onChangeText={(text) => setPassword(text)}
+          value={password}
+          secureTextEntry={true}
+          placeholder="Password"
+          autoCapitalize={'none'}
+        />
+      </View>
+      <View style={[styles.verticallySpaced, styles.mt20]}>
+        <Button title="Sign in" disabled={loading} onPress={() => signInWithEmail()} />
+      </View>
+      <View style={styles.verticallySpaced}>
+        <Button title="Sign up" disabled={loading} onPress={() => signUpWithEmail()} />
+      </View>
+    </View>
+  )*/
 }
 
-// StyleSheet for organizing styles
 const styles = StyleSheet.create({
-  container: {
+    container: {
     flex: 1, // Take up full screen
     backgroundColor: '#f0f0f0', // Light background color
   },
@@ -136,4 +173,4 @@ const styles = StyleSheet.create({
     marginTop: 15,
     fontSize: 14,
   },
-});
+})

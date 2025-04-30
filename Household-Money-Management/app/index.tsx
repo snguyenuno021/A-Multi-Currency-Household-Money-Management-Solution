@@ -15,7 +15,7 @@ export default function Index() {
             router.replace("/home")
         }
         else {
-            router.replace("/loginsb")
+            router.replace("/login")
         }
 
     });
