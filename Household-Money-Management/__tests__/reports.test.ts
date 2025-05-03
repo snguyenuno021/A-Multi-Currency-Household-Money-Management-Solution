@@ -5,7 +5,7 @@ import {
   calculateAverage,
   formatCurrency,
   generateReportSummary,
-} from '../app/reports';
+} from '../app/(tabs)/home/reports';
 
 describe('Reports Utility Functions', () => {
 
