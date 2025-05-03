@@ -64,7 +64,6 @@ export default function AddTransactionScreen() {
 
     setLoading(true);
 
-    // Copy session checking from the other tabs
     // const { data: { user } } = await supabase.auth.getUser();
     // if (!user) {
     //   Alert.alert('Authentication Error', 'You must be logged in to add transactions.');
@@ -116,6 +115,7 @@ export default function AddTransactionScreen() {
       <Text style={styles.label}>Currency:</Text>
       <View style={styles.pickerContainer}>
         <Picker
+          testID="currency-picker" 
           selectedValue={currency}
           onValueChange={(itemValue: string) => setCurrency(itemValue)}
           style={styles.picker}
@@ -136,6 +136,7 @@ export default function AddTransactionScreen() {
       <Text style={styles.label}>Type:</Text>
       <View style={styles.pickerContainer}>
         <Picker
+          testID='type-picker'
           selectedValue={type}
           onValueChange={(itemValue: 'income' | 'expense') => setType(itemValue)}
           style={styles.picker}
@@ -149,6 +150,7 @@ export default function AddTransactionScreen() {
       <Text style={styles.label}>Category:</Text>
       <View style={styles.pickerContainer}>
         <Picker
+          testID='category-picker'
           selectedValue={category}
           onValueChange={(itemValue: string) => setCategory(itemValue)}
           style={styles.picker}
