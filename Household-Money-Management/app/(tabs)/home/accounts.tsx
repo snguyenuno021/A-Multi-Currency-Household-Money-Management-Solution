@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   View,
   Text,
@@ -9,14 +9,14 @@ import {
   Platform,
   ScrollView,
   TouchableOpacity,
-} from 'react-native';
-import { Picker } from '@react-native-picker/picker';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { supabase } from '@/utils/supabase';
+} from 'react-native'
+import { Picker } from '@react-native-picker/picker'
+import DateTimePicker from '@react-native-community/datetimepicker'
+import { supabase } from '@/utils/supabase'
 
 // Define a simple list of currencies and transaction types
-const currencies = ['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'CNY', 'INR'];
-const transactionTypes = ['expense', 'income'];
+const currencies = ['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'CNY', 'INR']
+const transactionTypes = ['expense', 'income']
 // Define a simple list of categories (can be fetched from Supabase later)
 const categories = [
   'Food',
@@ -28,47 +28,47 @@ const categories = [
   'Bills',
   'Entertainment',
   'Other',
-];
+]
 
 export default function AddTransactionScreen() {
-  const [amount, setAmount] = useState('');
-  const [currency, setCurrency] = useState(currencies[0]);
-  const [description, setDescription] = useState('');
-  const [category, setCategory] = useState(categories[0]);
-  const [type, setType] = useState(transactionTypes[0]); // 'expense' or 'income'
-  const [date, setDate] = useState(new Date());
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [amount, setAmount] = useState('')
+  const [currency, setCurrency] = useState(currencies[0])
+  const [description, setDescription] = useState('')
+  const [category, setCategory] = useState(categories[0])
+  const [type, setType] = useState(transactionTypes[0]) // 'expense' or 'income'
+  const [date, setDate] = useState(new Date())
+  const [showDatePicker, setShowDatePicker] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const onDateChange = (event: any, selectedDate?: Date) => {
-    const currentDate = selectedDate || date;
-    setShowDatePicker(Platform.OS === 'ios'); // Hide picker on iOS immediately
-    setDate(currentDate);
-  };
+    const currentDate = selectedDate || date
+    setShowDatePicker(Platform.OS === 'ios') // Hide picker on iOS immediately
+    setDate(currentDate)
+  }
 
   const showDatepicker = () => {
-    setShowDatePicker(true);
-  };
+    setShowDatePicker(true)
+  }
 
   const addTransaction = async () => {
     // Basic validation
-    const parsedAmount = parseFloat(amount);
+    const parsedAmount = parseFloat(amount)
     if (isNaN(parsedAmount) || parsedAmount <= 0) {
-      Alert.alert('Validation Error', 'Please enter a valid positive amount.');
-      return;
+      Alert.alert('Validation Error', 'Please enter a valid positive amount.')
+      return
     }
     if (!description.trim()) {
-      Alert.alert('Validation Error', 'Please enter a description.');
-      return;
+      Alert.alert('Validation Error', 'Please enter a description.')
+      return
     }
 
-    setLoading(true);
+    setLoading(true)
 
-    // const { data: { user } } = await supabase.auth.getUser();
+    // const { data: { user } } = await supabase.auth.getUser()
     // if (!user) {
-    //   Alert.alert('Authentication Error', 'You must be logged in to add transactions.');
-    //   setLoading(false);
-    //   return;
+    //   Alert.alert('Authentication Error', 'You must be logged in to add transactions.')
+    //   setLoading(false)
+    //   return
     // }
 
     const transactionData = {
@@ -78,28 +78,23 @@ export default function AddTransactionScreen() {
       transaction_date: date.toISOString(), // Supabase timestamp format
       type: type,
       category: category,
-    };
-
-    // This needs to be updated to work with the setup
-    const { error } = await supabase.from('transactions').insert([transactionData]);
-
-    if (error) {
-      console.error('Error adding transaction:', error);
-      Alert.alert('Error', 'Failed to add transaction. Please try again.');
-    } else {
-      Alert.alert('Success', 'Transaction added successfully!');
-      // Clear the form after success
-      setAmount('');
-      setDescription('');
-      // Keep currency, type, category, date as they might be reused
-      // setCurrency(currencies[0]);
-      // setType(transactionTypes[0]);
-      // setCategory(categories[0]);
-      // setDate(new Date());
     }
 
-    setLoading(false);
-  };
+    // This needs to be updated to work with the setup
+    const { error } = await supabase.from('transactions').insert([transactionData])
+
+    if (error) {
+      console.error('Error adding transaction:', error)
+      Alert.alert('Error', 'Failed to add transaction. Please try again.')
+    } else {
+      Alert.alert('Success', 'Transaction added successfully!')
+      // Clear the form after success
+      setAmount('')
+      setDescription('')
+    }
+
+    setLoading(false)
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -187,7 +182,7 @@ export default function AddTransactionScreen() {
 
 
     </ScrollView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -267,4 +262,4 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     borderRadius: 16,
   },
-});
+})
