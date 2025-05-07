@@ -10,7 +10,7 @@ async function getuserdata(user: any) {
     }
 
 export async function getData(user: any) {
-    await getuserdata(user).then(result => {saveddata = result; if(!isUpdated()) saveddata = {"usd":0} })
+    await getuserdata(user).then(result => {saveddata = result})
 }
 
 export function getstoreddata() {
